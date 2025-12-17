@@ -23,6 +23,7 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+            "index": "index.html",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
