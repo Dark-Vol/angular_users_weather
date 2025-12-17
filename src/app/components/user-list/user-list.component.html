@@ -1,0 +1,75 @@
+<div class="user-list-container">
+  <h1 class="page-title">User List</h1>
+
+  @if (loading()) {
+    <div class="loading-container">
+      <div class="spinner"></div>
+      <p>Loading users...</p>
+    </div>
+  }
+
+  @if (error() && !loading()) {
+    <div class="error-container">
+      <p class="error-message">{{ error() }}</p>
+      <button class="retry-button" (click)="retry()">Retry</button>
+    </div>
+  }
+
+  @if (!loading() && !error() && users().length > 0) {
+    <div class="users-grid">
+      @for (user of users(); track user.email) {
+        <div class="user-card">
+          <div class="user-header">
+            <img
+              [src]="user.picture.large"
+              [alt]="user.name.first + ' ' + user.name.last"
+              class="user-avatar"
+            />
+            <div class="user-info">
+              <h2 class="user-name">{{ user.name.first }} {{ user.name.last }}</h2>
+              <p class="user-gender">{{ user.gender }}</p>
+            </div>
+          </div>
+
+          <div class="user-details">
+            <div class="detail-item">
+              <span class="detail-label">Location:</span>
+              <span class="detail-value">{{ user.location.city }}, {{ user.location.country }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Email:</span>
+              <span class="detail-value">{{ user.email }}</span>
+            </div>
+          </div>
+
+          <div class="weather-section">
+            @if (user.weather) {
+              <div class="weather-info">
+                <div class="weather-icon">{{ user.weather.weatherIcon }}</div>
+                <div class="weather-temps">
+                  <div class="temp-current">
+                    <span class="temp-value">{{ user.weather.currentTemperature }}°C</span>
+                    <span class="temp-label">Current</span>
+                  </div>
+                  <div class="temp-range">
+                    <span class="temp-high">↑ {{ user.weather.dailyHigh }}°C</span>
+                    <span class="temp-low">↓ {{ user.weather.dailyLow }}°C</span>
+                  </div>
+                </div>
+              </div>
+            } @else {
+              <div class="weather-loading">Loading weather...</div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (!loading() && !error() && users().length === 0) {
+    <div class="empty-state">
+      <p>No users found.</p>
+    </div>
+  }
+</div>
+
